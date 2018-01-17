@@ -8,13 +8,14 @@ const RouterComponent = () => {
     <Router>
       <Scene key="root">
         <Scene
+          hideNavbar
           key="auth"
           component={LoginForm}
+          initial
         />
         <Scene
           key="main"
           component={Home}
-          initial
         />
       </Scene>
     </Router>
