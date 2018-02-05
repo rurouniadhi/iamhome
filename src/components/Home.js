@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { logoutUser } from '../actions';
-import { Button, Spinner } from './common';
+import { GoogleSignin } from 'react-native-google-signin';
+import { Button, Spinner, Card } from './common';
 import UserList from './UserList';
+import { logoutUser, loginUser } from '../actions';
 
 class Home extends Component {
   onButtonPress() {
@@ -26,9 +27,12 @@ class Home extends Component {
   }
 
   render() {
+    const user = GoogleSignin.currentUser();
     return (
       <View>
-        <Text style={styles.welcomeTextStyle}>Hai thereee</Text>
+        <Card>
+          <Text style={styles.welcomeTextStyle}>Selamat datang, {user.givenName} !</Text>
+        </Card>
         <UserList />
         {this.renderButton()}
       </View>
@@ -41,8 +45,9 @@ const styles = {
     padding: 5,
   },
   welcomeTextStyle: {
-    fontSize: 20,
-    textAlign: 'center'
+    fontSize: 25,
+    textAlign: 'center',
+    color: '#000'
   }
 };
 
@@ -55,5 +60,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  logoutUser
+  logoutUser, loginUser
 })(Home);

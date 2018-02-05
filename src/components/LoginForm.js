@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { GoogleSigninButton } from 'react-native-google-signin';
+// import { GoogleSigninButton } from 'react-native-google-signin';
+import { Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { Spinner } from './common';
-import { loginUser } from '../actions';
+import { loginUser, itemsFetchData } from '../actions';
 
 class LoginForm extends Component {
+  componentDidMount() {
+    this.props.itemsFetchData();
+  }
+
   onButtonPress() {
-    this.props.loginUser();
+    const { items } = this.props;
+    this.props.loginUser({ items });
   }
 
   renderButton() {
@@ -15,14 +21,18 @@ class LoginForm extends Component {
       return <Spinner size="large" style={{ marginTop: 400, alignSelf: 'center' }} />;
     }
     return (
-      <GoogleSigninButton
-        style={styles.buttonGoogle}
-        size={GoogleSigninButton.Size.Standard}
-        color={GoogleSigninButton.Color.Light}
-        onPress={this.onButtonPress.bind(this)}
-      />
+      <Button iconLeft transparent primary>
+        <Icon name='beer' />
+        <Text>Pub</Text>
+      </Button>
     );
   }
+  // <GoogleSigninButton
+  //   style={styles.buttonGoogle}
+  //   size={GoogleSigninButton.Size.Standard}
+  //   color={GoogleSigninButton.Color.Light}
+  //   onPress={this.onButtonPress.bind(this)}
+  // />
 
   render() {
     return (
@@ -59,11 +69,12 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth, users }) => {
   const { error, loading } = auth;
-  return { error, loading };
+  const { items, itemsHasErrored, itemsIsLoading } = users;
+  return { error, loading, items, itemsHasErrored, itemsIsLoading };
 };
 
 export default connect(mapStateToProps, {
-  loginUser
+  loginUser, itemsFetchData
 })(LoginForm);

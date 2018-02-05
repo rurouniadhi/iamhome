@@ -1,32 +1,79 @@
 import React, { Component } from 'react';
-import { ListView } from 'react-native';
+import _ from 'lodash';
+import { Text, FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
-import ListItem from './ListItem';
+import { Actions } from 'react-native-router-flux';
+import { GoogleSignin } from 'react-native-google-signin';
+import { CardSection, Button } from './common';
+import { itemsFetchData, loginUser, itemSave } from '../actions';
+
 
 class UserList extends Component {
-  componentWillMount() {
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-    this.dataSource = ds.cloneWithRows(this.props.users);
-  }
+    componentWillMount() {
+      this.props.itemsFetchData();
+    }
 
-  renderRow(user) {
-    return <ListItem user={user} />;
-  }
-
-  render() {
-    return (
-      <ListView
-        dataSource={this.dataSource}
-        renderRow={this.renderRow}
-      />
-    );
-  }
+    onCheckInPress() {
+      console.log('ini dari checkinpage', this.props.items);
+      const currentUser = GoogleSignin.currentUser().email;
+      console.log('current user google', currentUser);
+      const userdb = _.find(this.props.items, { Email: currentUser });
+      console.log('current user db', userdb);
+      Actions.checkinpage({ user: userdb });
+    }
+    render() {
+        if (this.props.hasErrored) {
+            return <Text>Sorry! There was an error loading the items</Text>;
+        }
+        if (this.props.isLoading) {
+            return <Text>Loading…</Text>;
+        }
+        return (
+          <View>
+            <FlatList
+              style={{ backgroundColor: '#fff', height: 300 }}
+              data={this.props.items}
+              keyExtractor={items => items.Id}
+              renderItem={({ item }) =>
+                <CardSection>
+                  <Text style={styles.userStyle}>{item.Name}</Text>
+                  <Text style={[styles.statusFalse, item.Status && styles.statusTrue]}>
+                    {String(item.Status)}
+                  </Text>
+                </CardSection>
+              }
+            />
+          <Button onPress={this.onCheckInPress.bind(this)}><Text>Check In</Text></Button>
+          </View>
+        );
+    }
 }
 
-const mapStateToProps = state => {
-  return { users: state.users };
+const styles = {
+  userStyle: {
+    textAlign: 'left',
+    fontSize: 20,
+    flex: 1
+  },
+  statusTrue: {
+    textAlign: 'right',
+    fontSize: 20,
+    flex: 1,
+    color: '#00cd46'
+  },
+  statusFalse: {
+    color: '#c21010',
+    flex: 1,
+    textAlign: 'right',
+    fontSize: 20
+  }
 };
 
-export default connect(mapStateToProps)(UserList);
+const mapStateToProps = state => {
+  const { items } = state.users;
+  return { items };
+};
+
+export default connect(mapStateToProps, {
+  itemsFetchData, loginUser, itemSave
+})(UserList);

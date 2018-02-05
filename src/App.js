@@ -15,10 +15,9 @@ class App extends Component {
         '1070010664755-74hurvecb3g5jqtn0g7q3erpptsk6i70.apps.googleusercontent.com'
     });
     GoogleSignin.hasPlayServices({ autoResolve: true });
-    GoogleSignin.currentUserAsync().then((user) => {
-      console.log('USER', user);
-      this.setState({ user });
-    }).done();
+    // GoogleSignin.currentUserAsync().then((user) => {
+    //   this.setState({ user });
+    // }).done();
   }
 
   render() {

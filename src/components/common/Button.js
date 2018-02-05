@@ -21,13 +21,13 @@ const styles = {
         padding: 10,
         margin: 20,
         borderRadius: 10,
-        borderColor: '#09b753',
+        borderColor: '#000',
         borderWidth: 2,
         alignSelf: 'stretch',
         justifyContent: 'center'
     },
     buttonTextStyle: {
-        color: 'rgb(6, 64, 112)',
+        color: '#000',
         fontSize: 22,
         textAlign: 'center'
     }
