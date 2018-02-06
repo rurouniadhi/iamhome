@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-// import { GoogleSigninButton } from 'react-native-google-signin';
-import { Button, Icon } from 'native-base';
+import { GoogleSigninButton } from 'react-native-google-signin';
 import { connect } from 'react-redux';
 import { Spinner } from './common';
 import { loginUser, itemsFetchData } from '../actions';
@@ -14,25 +13,21 @@ class LoginForm extends Component {
   onButtonPress() {
     const { items } = this.props;
     this.props.loginUser({ items });
-  }
+  } 
 
   renderButton() {
     if (this.props.loading) {
       return <Spinner size="large" style={{ marginTop: 400, alignSelf: 'center' }} />;
     }
     return (
-      <Button iconLeft transparent primary>
-        <Icon name='beer' />
-        <Text>Pub</Text>
-      </Button>
+      <GoogleSigninButton
+        style={styles.buttonGoogle}
+        size={GoogleSigninButton.Size.Standard}
+        color={GoogleSigninButton.Color.Light}
+        onPress={this.onButtonPress.bind(this)}
+      />
     );
   }
-  // <GoogleSigninButton
-  //   style={styles.buttonGoogle}
-  //   size={GoogleSigninButton.Size.Standard}
-  //   color={GoogleSigninButton.Color.Light}
-  //   onPress={this.onButtonPress.bind(this)}
-  // />
 
   render() {
     return (

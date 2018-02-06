@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { GoogleSignin } from 'react-native-google-signin';
-import { Button, Spinner, Card } from './common';
+import {
+  Container, Header, Title, Content,
+  Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { Spinner } from './common';
 import UserList from './UserList';
 import { logoutUser, loginUser } from '../actions';
 
@@ -29,25 +32,36 @@ class Home extends Component {
   render() {
     const user = GoogleSignin.currentUser();
     return (
-      <View>
-        <Card>
-          <Text style={styles.welcomeTextStyle}>Selamat datang, {user.givenName} !</Text>
-        </Card>
-        <UserList />
-        {this.renderButton()}
-      </View>
+      <Container>
+        <Header style={{ backgroundColor: '#E1E4BC' }}>
+          <Left>
+            <Button transparent onPress={this.onButtonPress.bind(this)}>
+              <Icon name='menu' />
+            </Button>
+          </Left>
+          <Body>
+            <Title style={styles.welcomeTextStyle}>Hi, {user.givenName} !</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content>
+          <UserList />
+        </Content>
+      </Container>
     );
   }
 }
 const styles = {
   buttonStyle: {
-    height: 10,
+    height: 50,
     padding: 5,
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    position: 'absolute'
   },
   welcomeTextStyle: {
-    fontSize: 25,
     textAlign: 'center',
-    color: '#000'
+    color: '#949a46'
   }
 };
 
