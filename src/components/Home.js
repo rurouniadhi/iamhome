@@ -1,67 +1,56 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Entypo';
 import { GoogleSignin } from 'react-native-google-signin';
-import {
-  Container, Header, Title, Content,
-  Button, Left, Right, Body, Icon, Text } from 'native-base';
-import { Spinner } from './common';
+// import { Header } from './common';
 import UserList from './UserList';
 import { logoutUser, loginUser } from '../actions';
 
 class Home extends Component {
-  onButtonPress() {
-    this.props.logoutUser();
-  }
-  renderButton() {
-    if (this.props.loading) {
-      return <Spinner size="large" />;
-    }
-    return (
-      <View>
-        <Button
-            style={styles.buttonStyle}
-            onPress={this.onButtonPress.bind(this)}
-        >
-          <Text>Logout</Text>
-        </Button>
-      </View>
+  onLogoutPress() {
+    Alert.alert(
+      '',
+      'Are you sure you want to logout ?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'OK', onPress: () => this.props.logoutUser() },
+      ],
     );
   }
 
   render() {
     const user = GoogleSignin.currentUser();
     return (
-      <Container>
-        <Header style={{ backgroundColor: '#E1E4BC' }}>
-          <Left>
-            <Button transparent onPress={this.onButtonPress.bind(this)}>
-              <Icon name='menu' />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={styles.welcomeTextStyle}>Hi, {user.givenName} !</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-          <UserList />
-        </Content>
-      </Container>
+      <View style={{ backgroundColor: '#FBFFB9', flex: 1 }}>
+        <View style={styles.headerStyle}>
+          <Text style={styles.welcomeText} >
+            Hi, {user.givenName}
+          </Text>
+          <Text style={styles.logoutStyle} >
+            <Icon
+              name='log-out' onPress={this.onLogoutPress.bind(this)}
+              size={30}
+            />
+          </Text>
+        </View>
+        <UserList />
+      </View>
     );
   }
 }
 const styles = {
-  buttonStyle: {
-    height: 50,
-    padding: 5,
-    alignSelf: 'center',
-    justifyContent: 'flex-end',
-    position: 'absolute'
+  headerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 20
   },
-  welcomeTextStyle: {
-    textAlign: 'center',
-    color: '#949a46'
+  welcomeText: {
+    fontSize: 25,
+    color: '#754F44',
+  },
+  logoutStyle: {
+    color: '#754F44'
   }
 };
 

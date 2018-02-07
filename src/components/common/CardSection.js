@@ -10,19 +10,26 @@ const CardSection = (props) => {
 };
 
 const styles = {
-    containerStyle: {
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        borderColor: '#000',
-        marginRight: 20,
-        marginLeft: 20,
-        flex: 2,
-        paddingLeft: 20,
-        paddingRight: 20,
-        height: 50,
-        position: 'relative',
-        alignItems: 'center'
-    }
+  containerStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
+    height: 60,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    elevation: 3,
+    position: 'relative'
+  }
 };
 
 export { CardSection };

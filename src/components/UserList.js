@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Alert, FlatList, Text } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { GoogleSignin } from 'react-native-google-signin';
-import { Container, Content, SwipeRow, View,
-  Icon, Button, Footer, FooterTab, List,
-  ListItem, Right, Body } from 'native-base';
+import Icon from 'react-native-vector-icons/Entypo';
 import { itemsFetchData, loginUser, itemSave } from '../actions';
-import { CardSection } from './common';
+import { CardSection, Button } from './common';
 
 class UserList extends Component {
     componentWillMount() {
@@ -25,6 +23,7 @@ class UserList extends Component {
       Actions.checkinpage({ user: userdb });
     }
 
+
     render() {
         if (this.props.hasErrored) {
             return <Text>Sorry! There was an error loading the items</Text>;
@@ -32,9 +31,15 @@ class UserList extends Component {
         if (this.props.isLoading) {
             return <Text>Loading…</Text>;
         }
-
+        const checkinStatus = () => {
+          if (this.props.items.map((item) => item.Status) === false) {
+            return 'cross';
+          }
+        };
+        const a = 'cross';
+        const b = 'check';
         return (
-          <Content>
+          <View>
             <FlatList
               style={{ marginBottom: 30 }}
               data={this.props.items}
@@ -43,65 +48,41 @@ class UserList extends Component {
                 <CardSection>
                   <Text style={styles.userStyle}>{item.Name}</Text>
                   <Icon
-                    name='radio-button-on'
-                    style={[styles.statusFalse, item.Status && styles.statusTrue]}
+                    name={[a && item.Status && b]}
+                    size={25}
                   />
+                  <Text style={[styles.statusFalse, item.Status && styles.statusTrue]}>
+                      {String(item.Status)}
+                  </Text>
                 </CardSection>
               }
             />
-            <SwipeRow
-               style={{
-                 width: 250,
-                 backgroundColor: 'rgb(213, 236, 104)',
-                 alignSelf: 'center',
-                 alignItems: 'flex-end',
-                 flex: 1,
-                  borderRadius: 20 }}
-               leftOpenValue={250}
-               disableLeftSwipe
-               swipeToOpenPercent={100}
-               onRowOpen={this.onCheckInPress.bind(this)}
-               left={
-                 <Button
-                   style={{ borderRadius: 20 }}
-                   danger onPress={this.onCheckInPress.bind(this)}
-                 >
-                   <Icon active name="undo" />
-                 </Button>
-               }
-               body={
-                 <View style={{ width: 100 }} >
-                   <Text style={{ paddingLeft: 20, fontSize: 20, fontWeight: 'bold' }}>
-                     Check In
-                   </Text>
-                 </View>
-               }
-            />
-          </Content>
+          <Button onPress={this.onCheckInPress.bind(this)}><Text>Check In</Text></Button>
+        </View>
         );
     }
 }
 
-// <Button onPress={this.onCheckInPress.bind(this)}><Text>Check In</Text></Button>
 const styles = {
   userStyle: {
     textAlign: 'left',
-    fontSize: 20
+    alignSelf: 'center',
+    fontSize: 20,
+    color: '#754F44'
   },
   statusTrue: {
     textAlign: 'right',
-    fontSize: 35,
+    fontSize: 20,
     flex: 1,
-    color: '#00cd46'
+    color: '#00cd46',
+    alignSelf: 'center'
   },
   statusFalse: {
     color: '#c21010',
     flex: 1,
     textAlign: 'right',
-    fontSize: 35
-  },
-  listItemStyle: {
-
+    fontSize: 20,
+    alignSelf: 'center'
   }
 };
 

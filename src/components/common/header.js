@@ -6,18 +6,18 @@ const Header = (props) => {
     const { textStyle, viewStyle } = styles;
     return (
         <View style={viewStyle}>
-            <Text style={textStyle}>{props.headerText}</Text>
+            <Text style={textStyle}>{props.children}</Text>
         </View>
     );
 };
 const styles = {
     viewStyle: {
-        backgroundColor: '#73fb84',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 60,
+        height: 70,
         position: 'relative',
-        elevation: 2
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 20,
+        flex: 0
     },
     textStyle: {
         fontSize: 30,
